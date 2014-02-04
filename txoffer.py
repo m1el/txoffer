@@ -538,7 +538,8 @@ class IndexElement(Element):
                 link = "/pack/{:d}/{}".format(number, os.path.basename(name))
             else:
                 link = "javascript:ToClipboard('/msg {} XDCC SEND {:d}')".format(self.master.config["irc"][0]["nickname"] if self.master.config["irc"] else "BOTNICK", number)
-            yield tag.clone().fillSlots(link=link, number="#{:d}".format(number), name=os.path.basename(name))
+            size = bytesToHuman(self.master.pack_size[number])
+            yield tag.clone().fillSlots(link=link, size=size, number="#{:d}".format(number), name=os.path.basename(name))
 
 class StatusElement(Element):
     loader = XMLFile(FilePath('web/status.html'))
@@ -819,6 +820,7 @@ class Master(service.MultiService):
         self.web.log = lambda request: None
 
         self.packs = {}
+        self.pack_size = {}
         self.pack_lookup = {}
         self.pack_number = 1
 
@@ -1135,6 +1137,7 @@ class Master(service.MultiService):
                 return
 
         self.packs[self.pack_number] = filename
+        self.pack_size[number] = os.path.getsize(filename)
         self.pack_lookup[filename] = self.pack_number
 
         with open("txoffer.packlist", "a") as f:
@@ -1165,6 +1168,7 @@ class Master(service.MultiService):
                         continue
                     number = index + 1
                     self.packs[number] = path
+                    self.pack_size[number] = os.path.getsize(path)
                     self.pack_lookup[path] = number
                 self.pack_number = len(self.packs) + 1
         except IOError:

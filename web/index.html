@@ -6,7 +6,16 @@
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400" />
 <style>/*<![CDATA[ */
 body { text-align: center; font-family: Ubuntu, sans-serif; font-size: 16px; line-height: 34px; } #packs { display: inline-block; } .list { display: inline-block; text-align: left; min-width: 960px; margin: 0; padding: 0; } #packs >
-ul li { list-style: none; border-bottom: 1px solid #E8E8E8; } a, span { display: inline-block; } a { color: #333; width: 100%; text-decoration: none; } a:hover { color: #EE8800; cursor: pointer; } #header { text-align: left; margin: 20px 0 0 0; padding: 0; } #header span { color: #AAA; font-size: 13px; line-height: 18px; } span:first-child { text-align: right; width: 100px; } span:last-child { text-align: left; padding-left: 20px; } #search { float: left; margin: 0; padding: 0 6px; font-size: 20px; line-height: 26px; color: #666; } .paging { float: right; margin: 0; } .paging li { display: block; float: left; height: 30px; margin-left: 10px; background: #DDD; border-radius: 10px; list-style: none; font-size: 20px; font-weight: bold; line-height: 30px; padding: 0 8px; } .clearfix:after { content: ""; display: table; clear: both; } .sort { cursor: pointer; } .desc:after { /* Down arrow */ border-color: #AAA transparent; border-style: solid; border-width: 6px 6px 0px 6px; height: 0px; width: 0px; content: ""; position: relative; top: 10px; left: 4px; } .asc:after { /* Up arrow */ border-color: #AAA transparent; border-style: solid; border-width: 0px 6px 6px 6px; height: 0px; width: 0px; content: ""; position: relative; bottom: 10px; left: 4px; }
+ul li { list-style: none; border-bottom: 1px solid #E8E8E8; } a, span { display: inline-block; } a { color: #333; width: 100%; text-decoration: none; } a:hover { color: #EE8800; cursor: pointer; } #header { text-align: left; margin: 20px 0 0 0; padding: 0; } #header span { color: #AAA; font-size: 13px; line-height: 18px; }
+span:first-child {
+	text-align: right;
+	width: 100px;
+}
+span.size {
+	text-align: right;
+	width: 80px;
+}
+span:last-child { text-align: left; padding-left: 20px; } #search { float: left; margin: 0; padding: 0 6px; font-size: 20px; line-height: 26px; color: #666; } .paging { float: right; margin: 0; } .paging li { display: block; float: left; height: 30px; margin-left: 10px; background: #DDD; border-radius: 10px; list-style: none; font-size: 20px; font-weight: bold; line-height: 30px; padding: 0 8px; } .clearfix:after { content: ""; display: table; clear: both; } .sort { cursor: pointer; } .desc:after { /* Down arrow */ border-color: #AAA transparent; border-style: solid; border-width: 6px 6px 0px 6px; height: 0px; width: 0px; content: ""; position: relative; top: 10px; left: 4px; } .asc:after { /* Up arrow */ border-color: #AAA transparent; border-style: solid; border-width: 0px 6px 6px 6px; height: 0px; width: 0px; content: ""; position: relative; bottom: 10px; left: 4px; }
 /* ]]>*/</style>
 <script src="/list.js"></script>
 <script language="javascript" type="text/javascript">/*<![CDATA[ */
@@ -24,6 +33,8 @@ function ToClipboard(txt) { if (window.clipboardData) { window.clipboardData.cle
 		<li>
 		<span class="sort desc" data-sort="number">
 			Pack Number</span>
+		<span class="size">
+			File size</span>
 		<span class="sort" data-sort="name">
 			Filename</span>
 		</li>
@@ -36,6 +47,9 @@ function ToClipboard(txt) { if (window.clipboardData) { window.clipboardData.cle
 			</t:attr>
 			<span class="number">
 				<t:slot name="number" />
+			</span>
+			<span class="size">
+				<t:slot name="size" />
 			</span>
 			<span class="name">
 				<t:slot name="name" />
