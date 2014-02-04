@@ -626,6 +626,18 @@ class RobotResource(Resource):
     def render_GET(self, request):
         return "User-agent: *\nDisallow: /"
 
+class PacksTxtResource(Resource):
+    isLeaf = True
+
+    def render_GET(self, request):
+        request.setHeader('content-type', 'text/plain')
+        for number, name in self.master.packs.items():
+             size = self.master.pack_size[number]
+             name = os.path.basename(name)
+             request.write("#%s: %s\t%s\n" % (number, size, name))
+        request.finish()
+        return NOT_DONE_YET
+
 class StatusResource(Resource):
     isLeaf = True
 
@@ -732,15 +744,17 @@ class Web(Site):
         listjs = ListResource()
         status = StatusResource()
         pack = PackResource()
+        packs = PacksTxtResource()
 
         index.factory = robot.factory = listjs.factory = status.factory = pack.factory = self
-        self.master = index.master = robot.master = listjs.master = status.master = pack.master = master
+        self.master = index.master = robot.master = listjs.master = status.master = pack.master = packs.master = master
 
         Site.__init__(self, EncodingResourceWrapper(index, [GzipEncoderFactory()]))
         index.putChild("robots.txt", robot) # No reason to bother gzipping this
         index.putChild("list.js", EncodingResourceWrapper(listjs, [GzipEncoderFactory()]))
         index.putChild("status", EncodingResourceWrapper(status, [GzipEncoderFactory()]))
         index.putChild("pack", EncodingResourceWrapper(pack, [GzipEncoderFactory()]))
+        index.putChild("packs.txt", EncodingResourceWrapper(packs, [GzipEncoderFactory()]))
 
     def send(self, host, number):
         if host not in self.master.downloads:
