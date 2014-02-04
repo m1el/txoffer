@@ -1137,7 +1137,10 @@ class Master(service.MultiService):
                 return
 
         self.packs[self.pack_number] = filename
-        self.pack_size[number] = os.path.getsize(filename)
+        try:
+            self.pack_size[self.pack_number] = os.path.getsize(filename)
+        except:
+            self.pack_size[self.pack_number] = 0
         self.pack_lookup[filename] = self.pack_number
 
         with open("txoffer.packlist", "a") as f:
@@ -1168,7 +1171,10 @@ class Master(service.MultiService):
                         continue
                     number = index + 1
                     self.packs[number] = path
-                    self.pack_size[number] = os.path.getsize(path)
+                    try:
+                        self.pack_size[number] = os.path.getsize(path)
+                    except:
+                        self.pack_size[number] = 0
                     self.pack_lookup[path] = number
                 self.pack_number = len(self.packs) + 1
         except IOError:
